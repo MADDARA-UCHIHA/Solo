@@ -70,7 +70,7 @@ dependencies {
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 
     // Retrofit (Cloud spam DB sync + backend API)
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -79,7 +79,7 @@ dependencies {
 
     // Hilt DI
     implementation("com.google.dagger:hilt-android:2.51")
-    kapt("com.google.dagger:hilt-compiler:2.51")
+    ksp("com.google.dagger:hilt-compiler:2.51")
 
     // VoIP / WebRTC / Twilio
     implementation("com.twilio:voice-android:6.9.0")
