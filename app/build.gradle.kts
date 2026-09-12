@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "com.compony.AIcallblocker"
+    namespace = "com.aicallblocker.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.compony.AIcallblocker"
+        applicationId = "com.aicallblocker.app"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

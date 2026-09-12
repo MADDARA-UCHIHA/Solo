@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:882776567886:android:509357b982cdf87031131f",
+        "mobilesdk_app_id": "1:882776567886:android:f17326b760d948cd31131f",
         "android_client_info": {
-          "package_name": "com.compony.AIcallblocker"
+          "package_name": "com.aicallblocker.app"
         }
       },
       "oauth_client": [],
