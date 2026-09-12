@@ -7,7 +7,6 @@ plugins {
     kotlin("kapt")
     // MUHIM: bu plagin app/google-services.json faylini o'qiydi va undan
     // BuildConfig/resurslarga Firebase loyihasi ma'lumotlarini kiritadi.
-    // Fayl mavjud bo'lmasa, Gradle sync xatolik beradi (pastdagi izohga qarang).
     id("com.google.gms.google-services")
 }
 
@@ -89,8 +88,8 @@ dependencies {
     // VoIP / WebRTC / Twilio
     implementation("com.twilio:voice-android:6.9.0")
 
-    // Firebase BoM: versiyalarni markazlashtiradi, shundan keyin quyidagi
-    // firebase-* dependency'larda versiya ko'rsatilmaydi.
+    // Firebase BoM: versiyalarni markazlashtiradi. BoM orqali ishlatilganda
+    // firebase-messaging-ktx da alohida versiya yozilmaydi.
     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
 
