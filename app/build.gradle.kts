@@ -88,9 +88,8 @@ dependencies {
     // VoIP / WebRTC / Twilio
     implementation("com.twilio:voice-android:6.9.0")
 
-    // Firebase BoM: versiyalarni markazlashtiradi. BoM orqali ishlatilganda
-    // firebase-messaging-ktx da alohida versiya yozilmaydi.
-    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
+    // Firebase BoM barqaror versiyasi (33.1.2)
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-messaging-ktx")
 
     testImplementation("junit:junit:4.13.2")
