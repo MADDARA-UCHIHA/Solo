@@ -1,0 +1,46 @@
+-- 003_secure_trial_accounts_rls.sql
+--
+-- 002_user_trial_accounts.sql created public.user_trial_accounts WITHOUT
+-- enabling Row Level Security and without any policies.
+--
+-- In Supabase, RLS is OFF by default on any table created via SQL/migrations.
+-- A table with RLS off is fully readable AND writable through the PostgREST
+-- API by anyone holding the project's anon/publishable key — and this app's
+-- anon key (SUPABASE_PUBLISHABLE_KEY) is hardcoded in app/build.gradle.kts,
+-- so it ships inside every APK and can be extracted by decompiling the app.
+--
+-- Net effect before this migration: anyone could, without signing in,
+--   GET  https://<project>.supabase.co/rest/v1/user_trial_accounts
+-- and read every row (email, device_id, subscription_end_date), or PATCH /
+-- POST / DELETE rows directly — e.g. resetting device_id to mint unlimited
+-- trials, or extending/forging subscription_end_date for any device.
+
+alter table public.user_trial_accounts enable row level security;
+
+-- Intentionally NO policies for anon/authenticated are added here.
+-- With RLS on and zero policies, PostgREST denies all access from the
+-- client, so this table becomes reachable only via the service_role key
+-- (i.e. from your own backend), which bypasses RLS by design.
+--
+-- Use this if the app needs to manage trials itself. If instead trial
+-- issuance/lookup should only ever happen through your backend (recommended,
+-- since device_id is client-supplied and shouldn't be trusted for auth),
+-- leave it exactly as above and expose a backend endpoint (e.g. added to
+-- VoipBackendApi) that reads/writes this table using the service_role key.
+--
+-- If you later want the Android app to read a trial row directly via the
+-- anon key, add a narrower policy instead of leaving the table open, e.g.:
+--
+-- create policy "Users can read their own trial status"
+--     on public.user_trial_accounts for select
+--     to authenticated
+--     using (
+--         id in (
+--             select id from public.user_trial_accounts
+--             where device_id = current_setting('request.jwt.claims', true)::json->>'device_id'
+--         )
+--     );
+--
+-- (This requires device_id to be embedded in the user's JWT claims at sign-in
+-- time — a plain client-supplied device_id column can't safely be trusted in
+-- a USING clause, since anon/authenticated callers can send any value.)

@@ -1,0 +1,10 @@
+# Copy this file to "local.properties" (which is gitignored) and set your
+# own Android SDK path. This file itself is safe to commit — it contains
+# no machine-specific or secret values.
+#
+# Windows example:
+# sdk.dir=C\:\\Users\\<username>\\AppData\\Local\\Android\\Sdk
+#
+# macOS / Linux example:
+# sdk.dir=/Users/<username>/Library/Android/sdk
+sdk.dir=/path/to/your/Android/Sdk

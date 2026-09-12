@@ -1,0 +1,16 @@
+
+# Local SDK path / per-developer secrets — must never be committed
+local.properties
+
+# Android/Gradle build output
+*.iml
+.gradle/
+/local.properties
+/.idea/
+/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# AI Code Review temporary files
+.ai-code-review/

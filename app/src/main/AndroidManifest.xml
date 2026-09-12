@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- USSD forwarding ACTION_DIAL orqali ochiladi; ilova kodni avtomatik yubormaydi. -->
+
+    <application
+        android:name=".AiCallBlockerApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="AI Call Blocker"
+        android:theme="@style/Theme.AiCallBlocker">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.MyCallScreeningService"
+            android:permission="android.permission.BIND_SCREENING_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService"/>
+            </intent-filter>
+        </service>
+
+        <!--
+          MUHIM: foregroundServiceType="phoneCall" Android 14+ da faqat
+          ilova haqiqatan ham qo'ng'iroqni BOSHQARSA (InCallService rolini
+          ushlab turgan default/assistant dialer, yoki ConnectionService
+          orqali chaqiruv yaratuvchi ilova) ishlatilishi mumkin.
+
+          Oddiy CallScreeningService + alohida foreground service kombinatsiyasi
+          bilan "phoneCall" turini deklaratsiya qilish real audio-ga kirish
+          huquqini BERMAYDI va Play Console tekshiruvida rad etilishi yoki
+          runtime'da SecurityException/ServiceStartNotAllowedException
+          berilishi mumkin.
+
+          Shu sababli quyida ikkita YO'L ko'rsatilgan (README.md'da batafsil):
+            A) Agar ilova AI ovozli javobni haqiqiy qo'ng'iroq audiosida
+               berishi kerak bo'lsa — ilova InCallService bo'lishi va
+               foydalanuvchi uni DEFAULT PHONE APP qilib tanlashi shart.
+               Shunda audio route InCallService orqali qonuniy boshqariladi.
+            B) Agar ilova faqat metama'lumot (raqam, matn) darajasida ishlasa
+               (masalan post-call SMS/eslatma yuborish, yoki VoIP/SIP asosidagi
+               o'z chaqiruv tizimi) — "phoneCall" turi umuman kerak emas,
+               oddiy "dataSync" yoki "specialUse" turi (va tegishli
+               asoslash) yetarli.
+
+          Pastdagi deklaratsiya — B holatiga moslashtirilgan xavfsiz variant:
+          faqat fon jarayoni (masalan STT natijasini serverga yuborish va
+          xulosa notification chiqarish) uchun, real audio route qilmaydi.
+        -->
+        <!-- Bu servis PSTN audio yozmaydi; shuning uchun microphone/phoneCall type
+             e'lon qilinmaydi. Faqat WebSocket va yakuniy xulosa uchun dataSync. -->
+        <service
+            android:name=".service.AiCallHandlerService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"/>
+
+        <!-- YO'L B (tanlangan arxitektura): backend AI suhbatni yakunlagach
+             shu orqali matn/xulosa push xabari sifatida keladi. -->
+        <service
+            android:name=".service.VoipPushService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".service.NotificationActionReceiver"
+            android:exported="false"/>
+
+        <!--
+          A-yo'l tanlansa kerak bo'ladigan InCallService deklaratsiyasi
+          (hozircha kod yozilmagan — README.md'dagi "Keyingi bosqich"ga qarang).
+          Izohdan chiqarib, service klassini yozgach ishlating:
+
+          <service
+              android:name=".service.MyInCallService"
+              android:permission="android.permission.BIND_INCALL_SERVICE"
+              android:exported="true">
+              <meta-data
+                  android:name="android.telecom.IN_CALL_SERVICE_UI"
+                  android:value="true"/>
+              <intent-filter>
+                  <action android:name="android.telecom.InCallService"/>
+              </intent-filter>
+          </service>
+        -->
+
+    </application>
+</manifest>
