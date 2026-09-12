@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882776567886",
+    "project_id": "coffee-spark-ai-barista-3b405",
+    "storage_bucket": "coffee-spark-ai-barista-3b405.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882776567886:android:509357b982cdf87031131f",
+        "android_client_info": {
+          "package_name": "com.compony.AIcallblocker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMBlAKvc378de1_mzNHXbJurIMNE5aj94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
