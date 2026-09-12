@@ -4,7 +4,7 @@
             "outputFile": "com.aicallblocker.app-mergeDebugResources-41:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\user\\.gradle\\caches\\transforms-4\\5a3d29d0767c28b6e3320603c97ca0b8\\transformed\\appcompat-1.7.0\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\user\\.gradle\\caches\\transforms-4\\7827b5c5e8c4c2a25de657c24ccda2f4\\transformed\\appcompat-1.7.0\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
