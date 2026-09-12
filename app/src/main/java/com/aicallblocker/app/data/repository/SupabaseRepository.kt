@@ -1,37 +1,23 @@
 package com.aicallblocker.app.data.repository
+
+import com.aicallblocker.app.data.remote.SupabaseSdkClient
 import io.github.jan-tennert.supabase.gotrue.auth
 import io.github.jan-tennert.supabase.gotrue.user.UserInfo
+import io.github.jan-tennert.supabase.postgrest.from
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import com.aicallblocker.app.data.remote.SupabaseNumberOffer
-import com.aicallblocker.app.data.remote.SupabaseSdkClient
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Order
-import kotlinx.serialization.Serializable
+@Singleton
+class SupabaseRepository @Inject constructor(
+    private val supabaseSdkClient: SupabaseSdkClient
+) {
+    val client = supabaseSdkClient.client
 
-@Serializable
-data class NumberOrderInsert(
-    val offer_id: String? = null,
-    val requested_tier: String
-)
-
-class SupabaseRepository {
-    private val client = SupabaseSdkClient.client
-
-    suspend fun listAvailableOffers(): List<SupabaseNumberOffer> =
-        client.from("virtual_number_offers")
-            .select {
-                filter { eq("status", "available") }
-                order("tier", Order.ASCENDING)
-            }
-            .decodeList()
-
-    suspend fun createNumberOrder(tier: String, offerId: String? = null) {
-        check(client.auth.currentUserOrNull() != null) {
-            "Sign in is required before ordering a virtual number."
+    suspend fun getCurrentUser(): UserInfo? {
+        return try {
+            client.auth.currentUserOrNull()
+        } catch (e: Exception) {
+            null
         }
-        client.from("number_orders").insert(
-            NumberOrderInsert(offer_id = offerId, requested_tier = tier)
-        )
     }
 }
