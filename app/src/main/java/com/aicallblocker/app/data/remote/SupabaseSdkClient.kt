@@ -3,7 +3,6 @@ package com.aicallblocker.app.data.remote
 import com.aicallblocker.app.BuildConfig
 import io.github.jan-tennert.supabase.createSupabaseClient
 import io.github.jan-tennert.supabase.gotrue.Auth
-import io.github.jan-tennert.supabase.gotrue.auth
 import io.github.jan-tennert.supabase.postgrest.Postgrest
 import javax.inject.Inject
 import javax.inject.Singleton
